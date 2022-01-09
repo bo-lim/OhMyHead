@@ -48,7 +48,8 @@ class Scalp_classifier_Dataset(Dataset) :
 
 # dataset_path : root_path + '/Train'이나 root_path + '/Test'을 받음
 # (root_path : 데이터셋이 저장된 경로) 
-def make_dataset(dataset_path, category) : 
+def make_dataset(dataset_path, category) : # root_path + '/Train'이나 root_path + '/Label'을 받음
+    
     
     image_group_folder_path = dataset_path + '/Image'
     label_group_folder_path = dataset_path + '/Label'
@@ -95,6 +96,15 @@ def make_dataset(dataset_path, category) :
             vals_true.append(int(json_content['value_4']))
             vals_true.append(int(json_content['value_5']))
             vals_true.append(int(json_content['value_6']))
+            
+            # 양호함을 상징하는 'val7'
+            sum_val = int(json_content['value_1']) + int(json_content['value_2'])
+            + int(json_content['value_3']) + int(json_content['value_4'])
+            + int(json_content['value_5']) + int(json_content['value_6'])
+            if sum_val == 0 : 
+                vals_true.append(int(3)) # 두피의 양호함을 상징 
+            else : 
+                vals_true.append(int(0)) # 뭔가 이상이 있음을 상징
 
             vals_true = torch.Tensor(vals_true).type(torch.float32)
 
@@ -106,7 +116,6 @@ def make_dataset(dataset_path, category) :
     # image_path_list : 파일 경로가 저장된 리스트
     # vals_list : val1 ~ val6이 들어있는 Tensor 리스트
     # class_str_list : "모낭사이홍반_0.양호" 등의 문자열이 저장된 리스트
-    
     
 # 하나의 모발 이미지가 여러 증상을 가진 경우가 있다.
 # 하나의 이미지가 [A증상 중증, B증상 경증] 등 여러 증상에 대한 중증도를 나타내게끔 라벨 데이터를 만들어주는 기능도 한다
@@ -150,6 +159,13 @@ def make_unique_dataset(image_path_list, vals_list, class_str_list) :
             if unique_image_path_list[j].split('/')[-1] == file_name : # 중복된 파일이 있으면
                 # 클래스별 중증도만 통합
                 unique_severity_per_class_list[j] = unique_severity_per_class_list[j] + severity_per_class
+                
+                # '양호' 판정을 받은 두피들이 중복된게 많다. 그래서 라벨 데이터가 [0,0,0,0,0,0,6]처럼 나오는 경우가 있다
+                # 이를 방지하기 위한 코드
+                if torch.eq(severity, 0) == True :
+                    unique_severity_per_class_list[j][-1] = 1.0
+                
+                
                 is_sameFilename_here = True
                 
         if is_sameFilename_here == False :

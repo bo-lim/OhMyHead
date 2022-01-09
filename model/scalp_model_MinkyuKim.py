@@ -3,7 +3,7 @@
 # 제작일 : 2022.01.09
 # 제작자 : 김민규(minkyu4506@gmail.com)
 
-import dataset 
+import dataset_MinkyuKim 
 
 from tqdm import tqdm
 from PIL import Image
@@ -70,21 +70,21 @@ def make_model(device) :
     
     # 모발 분류를 위한 linear model 생성 후 교체
     new_classifier = nn.Sequential(
-                nn.Linear(in_features=2208, out_features=1024, bias=True),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=1024, out_features=512, bias=True),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=512, out_features=256, bias=True),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=256, out_features=128, bias=True),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=128, out_features=64, bias=True),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=64, out_features=32, bias=True),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=32, out_features=6, bias=False),
-                nn.Sigmoid() # 0~1사이 값으로 만들어버림
-            ).to(device)
+            nn.Linear(in_features=2208, out_features=1024, bias=True),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=1024, out_features=512, bias=True),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=512, out_features=256, bias=True),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=256, out_features=128, bias=True),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=128, out_features=64, bias=True),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=64, out_features=32, bias=True),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=32, out_features=7, bias=False),
+            nn.Sigmoid() # 0~1사이 값으로 만들어버림
+        ).to(device)
 
     for m in new_classifier.modules():
         if isinstance(m, nn.Linear) :
@@ -93,7 +93,7 @@ def make_model(device) :
     model_CNN.classifier = new_classifier # 교체
 
     model_Diagnoser = nn.Sequential(
-            nn.Linear(in_features=6, out_features=64, bias=True),
+            nn.Linear(in_features=7, out_features=64, bias=True),
             nn.LeakyReLU(),
             nn.Linear(in_features=64, out_features=128, bias=True),
             nn.LeakyReLU(),
@@ -129,7 +129,7 @@ def load_model_trained(device, PATH) :
 # 모델을 학습시킴
 def train_model(dataset_root_path, model_CNN, model_Diagnoser, device) :
 
-    Scalp_Health_Dataset, Scalp_classifier_Dataset = dataset.get_dataset(dataset_root_path)
+    Scalp_Health_Dataset, Scalp_classifier_Dataset = dataset_MinkyuKim.get_dataset(dataset_root_path)
 
     # 학습에 사용
     BATCH_SIZE = 256
