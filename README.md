@@ -16,3 +16,7 @@
 [장혜진](깃허브 등 프로필 링크) (소속학부)
 <br>
 [하희정](깃허브 등 프로필 링크) (소속학부)
+
+## 실행법 
+
+scalp_health_minkyuKim.py : 다운로드 받은 후 터미널에서 "python scalp_health_minkyuKim (이미지 경로)" 입력
