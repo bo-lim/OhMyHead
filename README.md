@@ -15,7 +15,7 @@
 <br>
 [장혜진](깃허브 등 프로필 링크) (소속학부)
 <br>
-[하희정](깃허브 등 프로필 링크) (소속학부)
+[하희정](https://github.com/Heejung-Ha) (Pharmacy of college)
 
 ## 실행법 
 
