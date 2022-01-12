@@ -10,13 +10,12 @@ from tkinter import filedialog
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
 class MyWidget(QWidget):
-
     def __init__(self):
         super().__init__()
         self.setStyleSheet("background-color: white;")  # background color
         
         # program title & introduction
-        self.logo = QPixmap('./logo.png').scaledToWidth(180)
+        self.logo = QPixmap('./GUI/logo.png').scaledToWidth(180)
     
         intro = "Oh My Hair는 전문 두피 분석 프로그램입니다.\n지금 바로 당신의 두피 상태를 확인해보세요!\n아래는 두피 종류 예시 이미지입니다."
         self.introduction = QLabel(intro, self)
@@ -25,10 +24,10 @@ class MyWidget(QWidget):
         self.introduction.setFont(font)
         
         # get example image
-        self.state0_img = QPixmap('./scalp_example/양호.jpg').scaledToHeight(70)
-        self.state1_img = QPixmap('./scalp_example/경증.jpg').scaledToHeight(70)
-        self.state2_img = QPixmap('./scalp_example/중등도.jpg').scaledToHeight(70)
-        self.state3_img = QPixmap('./scalp_example/중증.jpg').scaledToHeight(70)
+        self.state0_img = QPixmap('./GUI/scalp_example/양호.jpg').scaledToHeight(70)
+        self.state1_img = QPixmap('./GUI/scalp_example/경증.jpg').scaledToHeight(70)
+        self.state2_img = QPixmap('./GUI/scalp_example/중등도.jpg').scaledToHeight(70)
+        self.state3_img = QPixmap('./GUI/scalp_example/중증.jpg').scaledToHeight(70)
         
         self.big_box = QVBoxLayout()
         
