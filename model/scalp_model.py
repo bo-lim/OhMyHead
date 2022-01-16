@@ -96,26 +96,26 @@ def make_model(device) :
 
     # 모발 분류를 위한 linear model 생성 후 교체
     new_classifier = nn.Sequential(
-                nn.Linear(in_features=2208, out_features=512, bias=True),
-                nn.BatchNorm1d(num_features = 512),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=512, out_features=256, bias=True),
-                nn.BatchNorm1d(num_features = 256),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=256, out_features=256, bias=True),
-                nn.BatchNorm1d(num_features = 256),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=256, out_features=128, bias=True),
-                nn.BatchNorm1d(num_features = 128),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=128, out_features=64, bias=True),
-                nn.BatchNorm1d(num_features = 64),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=64, out_features=32, bias=True),
-                nn.BatchNorm1d(num_features = 32),
-                nn.LeakyReLU(),
-                nn.Linear(in_features=32, out_features=6, bias=False)
-            ).to(device)
+            nn.Linear(in_features=2208, out_features=512, bias=True),
+            nn.BatchNorm1d(num_features = 512),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=512, out_features=256, bias=True),
+            nn.BatchNorm1d(num_features = 256),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=256, out_features=256, bias=True),
+            nn.BatchNorm1d(num_features = 256),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=256, out_features=128, bias=True),
+            nn.BatchNorm1d(num_features = 128),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=128, out_features=64, bias=True),
+            nn.BatchNorm1d(num_features = 64),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=64, out_features=32, bias=True),
+            nn.BatchNorm1d(num_features = 32),
+            nn.LeakyReLU(),
+            nn.Linear(in_features=32, out_features=6, bias=False)
+        ).to(device)
 
     for m in new_classifier.modules():
         if isinstance(m, nn.Linear) :
