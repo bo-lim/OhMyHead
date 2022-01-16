@@ -17,6 +17,11 @@
 <br>
 [하희정](https://github.com/Heejung-Ha)(School of Pharmacy)
 
-## 실행법 
+## 모델 테스트 방법
 
-scalp_health_minkyuKim.py : 다운로드 받은 후 터미널에서 "python scalp_health_minkyuKim (이미지 경로)" 입력
+1. 레포지토리를 다운로드 받습니다
+2. [공유 폴더](https://drive.google.com/drive/folders/1xqGbGvXuyAUXGIg90vWh8Htqxc_pgbnH?usp=sharing)에 있는 'model_parameters.pt' 을 다운로드 받은 뒤 레포지토리의 'Scalp_model_parameters'폴더 안에 넣습니다.
+3. 터미널에서 cd '레포지토리 경로'를 입력합니다. ex) cd /Users/minkyukim/Documents/GitHub/OhMyHair
+4. 'python scalp_health_minkyuKim (이미지 경로)'를 입력해 테스트 결과를 확인합니다
+
+
