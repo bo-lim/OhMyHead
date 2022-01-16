@@ -7,6 +7,13 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QLabel
 from tkinter import filedialog
 
+# model inference
+import model.scalp_model as scalp_model
+import model.scalp_dataset as scalp_dataset
+import torch
+import os
+import sys
+
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
 class MyWidget(QWidget):
@@ -30,7 +37,7 @@ class MyWidget(QWidget):
         self.state3_img = QPixmap('./GUI/scalp_example/중증.jpg').scaledToHeight(70)
         
         self.big_box = QVBoxLayout()
-        
+        self.filepath = ''
         self.initUI()
         
     def initUI(self):
@@ -77,31 +84,32 @@ class MyWidget(QWidget):
         
         self.setLayout(self.big_box)
         self.setWindowTitle('Welcome!')
-        self.setGeometry(300, 300, 250, 300)
+        self.setGeometry(200, 300, 200, 350)
         self.show()
         
     def button1_clicked(self):
         # get user image
-        filename = filedialog.askopenfilename(initialdir='', title='파일선택', filetypes=(('jpg files', '*.jpg'),
+        self.filepath = filedialog.askopenfilename(initialdir='', title='파일선택', filetypes=(('jpg files', '*.jpg'),
     ('png files', '*.png'),('all files', '*.*')))
         
         # show filename
-        self.user_img = QLabel(filename, self)
+        self.user_img = QLabel(self.filepath, self)
         font = self.user_img.font()
         font.setPointSize(8)
         self.user_img.setFont(font)
         self.big_box.addWidget(self.user_img)
         
-        # button event
         button2 = QPushButton("분석결과 확인하기", self)
         button2.clicked.connect(self.button2_clicked)
         self.big_box.addWidget(button2)
         
         
     def button2_clicked(self):
-        # model inference
-        print("분석결과 clicked!")
-        
+        # print(self.filepath)
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        PATH = os.getcwd() + "/Scalp_model_parameters/"
+        model = scalp_model.load_model_trained(device, PATH)
+        scalp_model.test_model(self.filepath, model, device)
 
 if __name__ == '__main__':
    app = QtWidgets.QApplication(sys.argv)
