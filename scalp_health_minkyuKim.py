@@ -13,9 +13,9 @@ def main(IMAGE_PATH) :
 
     PATH = os.getcwd() + "/Scalp_model_parameters"
 
-    model_CNN, model_Diagnoser = scalp_model.load_model_trained(device, PATH)
+    model = scalp_model.load_model_trained(device, PATH)
 
-    scalp_model.test_model(IMAGE_PATH, model_CNN, model_Diagnoser, device)
+    scalp_model.test_model(IMAGE_PATH, model, device)
 
 if __name__ == "__main__":
     IMAGE_PATH = sys.argv # 터미널에서 실행할 때 같이 입력한 이미지 경로

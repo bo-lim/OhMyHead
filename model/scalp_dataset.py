@@ -7,7 +7,6 @@ from tqdm import tqdm
 from PIL import Image
 import json
 import os
-import re
 
 import torch
 import torchvision.transforms as transforms
@@ -31,24 +30,10 @@ class Scalp_Health_Dataset(Dataset) :
         
         return img, label
 
-# 이미지 데이터셋의 라벨에 해당하는 val1~val6이 여기서 입력값임
-class Scalp_classifier_Dataset(Dataset) :
-    def __init__(self, vals_list, severity_per_class_list) : # state_list : val1~val6 label_list : 증상별 중증도가 기록(예 : [0.33, 0.00, 1.00,...0.66])
-        self.vals_list = vals_list
-        self.severity_per_class_list = severity_per_class_list
-    def __len__(self) : 
-        return len(self.vals_list)
-
-    def __getitem__(self, index) : # 한 개의 데이터 가져오는 함수
-        
-        state = self.vals_list[index] # val1~val6
-        label = self.severity_per_class_list[index]
-        
-        return state, label
 
 # dataset_path : root_path + '/Train'이나 root_path + '/Test'을 받음
 # (root_path : 데이터셋이 저장된 경로) 
-def make_dataset(dataset_path, category) : # root_path + '/Train'이나 root_path + '/Label'을 받음
+def make_dataset(dataset_path, category) :
     
     
     image_group_folder_path = dataset_path + '/Image'
@@ -88,7 +73,8 @@ def make_dataset(dataset_path, category) : # root_path + '/Train'이나 root_pat
             
             image_file_path = image_folder_path + "/" + image_file_name
 
-            # val1 ~ val6
+            # val1 : 미세각질, val2 : 피지과다, val3 : 모낭사이홍반, val4 : 모낭홍반/농포, val5 : 비듬, val6 : 탈모
+            # 모든 val은 0,1,2,3 중 하나의 값을 가지고 있다
             vals_true = []
             vals_true.append(int(json_content['value_1']))
             vals_true.append(int(json_content['value_2']))
@@ -96,90 +82,61 @@ def make_dataset(dataset_path, category) : # root_path + '/Train'이나 root_pat
             vals_true.append(int(json_content['value_4']))
             vals_true.append(int(json_content['value_5']))
             vals_true.append(int(json_content['value_6']))
-            
-            # 양호함을 상징하는 'val7'
-            sum_val = int(json_content['value_1']) + int(json_content['value_2'])
-            + int(json_content['value_3']) + int(json_content['value_4'])
-            + int(json_content['value_5']) + int(json_content['value_6'])
-            if sum_val == 0 : 
-                vals_true.append(int(3)) # 두피의 양호함을 상징 
-            else : 
-                vals_true.append(int(0)) # 뭔가 이상이 있음을 상징
 
             vals_true = torch.Tensor(vals_true).type(torch.float32)
 
             image_path_list.append(image_file_path)
             vals_list.append(vals_true/3.0)
-            class_str_list.append(label_folder_list[i][4:]) # 이미지마다 할당된 클래스를 담음
-
-    return image_path_list, vals_list, class_str_list
+            
+    return image_path_list, vals_list
     # image_path_list : 파일 경로가 저장된 리스트
     # vals_list : val1 ~ val6이 들어있는 Tensor 리스트
-    # class_str_list : "모낭사이홍반_0.양호" 등의 문자열이 저장된 리스트
     
 # 하나의 모발 이미지가 여러 증상을 가진 경우가 있다.
 # 하나의 이미지가 [A증상 중증, B증상 경증] 등 여러 증상에 대한 중증도를 나타내게끔 라벨 데이터를 만들어주는 기능도 한다
 # 즉, 데이터 전처리
-def make_unique_dataset(image_path_list, vals_list, class_str_list) :  
+def make_unique_dataset(image_path_list, vals_list) :  
     unique_image_path_list = []
     unique_vals_list = []
-    unique_severity_per_class_list = []
-    
-    state_str_list = ["미세각질", "피지과다", "모낭사이홍반", "모낭홍반농포", "비듬", "탈모", "양호"]
     
     for i in tqdm(range(len(image_path_list)), desc = "make unique dataset" ) : 
         file_name = image_path_list[i].split('/')[-1] # 이미지 파일 이름
-        
-        # 모낭사이홍반 등 증상이 적힌 문자열만 추출
-        if class_str_list[i].find("중등도") != -1 :  
-            class_str = class_str_list[i][:-6] 
-        else :
-            class_str = class_str_list[i][:-5]
-        
-        # 중증 정도
-        severity_num = float(re.sub(r'[^0-9]', '', class_str_list[i]))
-        severity = torch.Tensor([severity_num]).type(torch.float32)/3.0
-        
-        # 증상을 one-hot encoding형식으로 처리(1이 들어갈 자리에 1대신 중증도를 나타낸 숫자를 넣음)
-        # 주의 : '양호'한 모발의 severity_per_class는 [0,0,0,0,0,0,1]이다
-        if torch.eq(severity, 0) == True :
-            class_str_index = state_str_list.index("양호")
-        else : 
-            class_str_index = state_str_list.index(class_str)
-        
-        severity_per_class = torch.zeros(len(state_str_list)).type(torch.float32)
-        if torch.eq(severity, 0) == True :
-            severity_per_class[class_str_index] = 1.0
-        else :
-            severity_per_class[class_str_index] = severity
         
         # 만들고 있던 unique list의 안에 같은 파일이름을 가진게 없는지 확인
         is_sameFilename_here = False
         for j in range(len(unique_image_path_list)) :
             if unique_image_path_list[j].split('/')[-1] == file_name : # 중복된 파일이 있으면
-                # 클래스별 중증도만 통합
-                unique_severity_per_class_list[j] = unique_severity_per_class_list[j] + severity_per_class
+                is_sameFilename_here = True # 중복 처리
                 
-                # '양호' 판정을 받은 두피들이 중복된게 많다. 그래서 라벨 데이터가 [0,0,0,0,0,0,6]처럼 나오는 경우가 있다
-                # 이를 방지하기 위한 코드
-                if torch.eq(severity, 0) == True :
-                    unique_severity_per_class_list[j][-1] = 1.0
-                
-                
-                is_sameFilename_here = True
-                
+        # 동일한 파일이 없으면 unique리스트에 추가
         if is_sameFilename_here == False :
             unique_image_path_list.append(image_path_list[i])
             unique_vals_list.append(vals_list[i])
-            unique_severity_per_class_list.append(severity_per_class)
     
-    return unique_image_path_list, unique_vals_list, unique_severity_per_class_list
+    return unique_image_path_list, unique_vals_list
 
 
-def get_dataset(root_path, purpose_str) : # purpose_str : 'Train' or 'Test'
-    image_path_list, vals_list, class_str_list = make_dataset(root_path + '/' + purpose_str, purpose_str)
-    image_path_list, vals_list, severity_per_class_list = make_unique_dataset(image_path_list, vals_list, class_str_list) 
+def get_dataset(root_path) : 
+    
+    Train_image_path_list, Train_vals_list = make_dataset(root_path + '/Train', "Train")
+    Train_image_path_list, Train_vals_list = make_unique_dataset(Train_image_path_list, Train_vals_list)
+    
+    
+    Test_image_path_list, Test_vals_list = make_dataset(root_path + '/Test', "Test")
+    Test_image_path_list, Test_vals_list = make_unique_dataset(Test_image_path_list, Test_vals_list)
+    
+    len_train_ds = int(len(Train_image_path_list) * 0.8) # 학습에 사용할 데이터 개수
+    
+    Valid_image_path_list = Train_image_path_list[len_train_ds:]
+    Train_image_path_list = Train_image_path_list[:len_train_ds]
+    
+    Valid_vals_list = Train_vals_list[len_train_ds:]
+    Train_vals_list = Train_vals_list[:len_train_ds]
+    
+    Train_Scalp_Health_Dataset = Scalp_Health_Dataset(Train_image_path_list, Train_vals_list)
+    Valid_Scalp_Health_Dataset = Scalp_Health_Dataset(Valid_image_path_list, Valid_vals_list)
+    Test_Scalp_Health_Dataset = Scalp_Health_Dataset(Test_image_path_list, Test_vals_list)
 
-    return Scalp_Health_Dataset(image_path_list, vals_list), Scalp_classifier_Dataset(vals_list, severity_per_class_list)
+    return Train_Scalp_Health_Dataset, Valid_Scalp_Health_Dataset, Test_Scalp_Health_Dataset
     
     
