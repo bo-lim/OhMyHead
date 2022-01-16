@@ -133,7 +133,7 @@ def load_model_trained(device, PATH) :
     model = make_model(device)
 
     # 학습된 가중치들 불러오기
-    PATH_model = PATH + 'model_parameter.pt'
+    PATH_model = PATH + 'model_parameters.pt'
     
     model.load_state_dict(torch.load(PATH_model))
     

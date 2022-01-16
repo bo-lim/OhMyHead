@@ -11,7 +11,7 @@ import sys
 def main(IMAGE_PATH) :
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    PATH = os.getcwd() + "/Scalp_model_parameters"
+    PATH = os.getcwd() + "/Scalp_model_parameters/"
 
     model = scalp_model.load_model_trained(device, PATH)
 
