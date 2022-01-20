@@ -39,6 +39,6 @@
 </p>
 
 2. 터미널 혹은 cmd에서 cd '레포지토리 경로'를 입력합니다. ex) cd /Users/minkyukim/Documents/GitHub/OhMyHair
-3. python 'get_mse_scalp_model (검증 데이터셋 경로)'를 입력해 클래스별("모낭사이홍반_0.양호" 등) mse를 구합니다.
+3. python 'get_mse_scalp_model (검증 데이터셋 경로)'를 입력해 증상별(모낭사이홍반, 비듬 등) mse를 구합니다.
   
 </div >
