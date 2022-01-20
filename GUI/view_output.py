@@ -20,6 +20,7 @@ with open(os.path.join(current_path, "GUI/disease_explained.txt"), 'r', encoding
     for line in f:
         description.append(line)
 
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
 ### GUI Output ###
 class WindowClass(QMainWindow, form_class) :
@@ -28,7 +29,7 @@ class WindowClass(QMainWindow, form_class) :
         self.setupUi(self)
         ### Prediction of model ###
         prediction_vec = pred_tensor
-        prediction_list = ['ë¯¸ì„¸ê°ì§ˆ', 'í”¼ì§€ê³¼ë‹¤', 'ëª¨ë‚­ì‚¬ì´í™ë°˜', 'ëª¨ë‚­í™ë°˜ë†í¬', 'ë¹„ë“¬', 'íƒˆëª¨']
+        prediction_list = ['ë¯¸ì„¸ê°ì§ˆ', '?”¼ì§?ê³¼ë‹¤', 'ëª¨ë‚­?‚¬?´?™ë°?', 'ëª¨ë‚­?™ë°˜ë†?¬', 'ë¹„ë“¬', '?ƒˆëª?']
         prediction = prediction_list[torch.argmax(prediction_vec)]
 
         # Set the window title
@@ -45,7 +46,7 @@ class WindowClass(QMainWindow, form_class) :
         self.title_box.setPixmap(self.qPixmapFileVar_title)
 
         # Scalp text
-        self.scalp_txt.setText("ë‹¹ì‹ ì˜ ë‘í”¼ëŠ” *{}*ì¸ ê²ƒìœ¼ë¡œ ë³´ì…ë‹ˆë‹¤.".format(prediction))
+        self.scalp_txt.setText("?‹¹?‹ ?˜ ?‘?”¼?Š” *{}*?¸ ê²ƒìœ¼ë¡? ë³´ì…?‹ˆ?‹¤.".format(prediction))
         self.scalp_txt.setFont(QtGui.QFont("Arial", 15, QtGui.QFont.Bold))
 
         # Scalp image
@@ -56,12 +57,12 @@ class WindowClass(QMainWindow, form_class) :
 
         # Model prediction
         self.result_txt.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold))
-        self.model_prediction.setText("ë¯¸ì„¸ê°ì§ˆì´ %.4fë§Œí¼, í”¼ì§€ê³¼ë‹¤ê°€ %.4fë§Œí¼, ëª¨ë‚­ì‚¬ì´í™ë°˜ì´ %.4fë§Œí¼, ëª¨ë‚­í™ë°˜ë†í¬ê°€ %.4fë§Œí¼, ë¹„ë“¬ì´ %.4fë§Œí¼, íƒˆëª¨ê°€ %.4fë§Œí¼ ìˆìŠµë‹ˆë‹¤."\
+        self.model_prediction.setText("ë¯¸ì„¸ê°ì§ˆ?´ %.4fë§Œí¼, ?”¼ì§?ê³¼ë‹¤ê°? %.4fë§Œí¼, ëª¨ë‚­?‚¬?´?™ë°˜ì´ %.4fë§Œí¼, ëª¨ë‚­?™ë°˜ë†?¬ê°? %.4fë§Œí¼, ë¹„ë“¬?´ %.4fë§Œí¼, ?ƒˆëª¨ê?? %.4fë§Œí¼ ?ˆ?Šµ?‹ˆ?‹¤."\
                                        % tuple(prediction_vec.tolist()))
         self.model_prediction.setFont(QtGui.QFont("Arial", 15))
 
         # Disease description
-        self.result_txt2.setText(prediction + " ê´€ë ¨ ì •ë³´")
+        self.result_txt2.setText(prediction + " ê´?? ¨ ? •ë³?")
         self.result_txt2.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold))
         self.disease.setText(description[prediction_list.index(prediction)].split(':')[1].strip())
         self.disease.setFont(QtGui.QFont("Arial", 15))
@@ -72,17 +73,17 @@ class WindowClass(QMainWindow, form_class) :
         ## Survey figures
         # shampoo
         self.qPixmapFileVar_title2 = QPixmap()
-        self.qPixmapFileVar_title2.load(os.path.join(current_path, f"GUI/figure/{prediction}_ìƒ´í‘¸ì‚¬ìš©ë¹ˆë„.png"))
+        self.qPixmapFileVar_title2.load(os.path.join(current_path, f"GUI/figure/{prediction}_?ƒ´?‘¸?‚¬?š©ë¹ˆë„.png"))
         self.qPixmapFileVar_title2 = self.qPixmapFileVar_title2.scaledToWidth(720)
         self.shampoo_figure.setPixmap(self.qPixmapFileVar_title2)
         # perm
         self.qPixmapFileVar_title3 = QPixmap()
-        self.qPixmapFileVar_title3.load(os.path.join(current_path, f"GUI/figure/{prediction}_íŒì£¼ê¸°.png"))
+        self.qPixmapFileVar_title3.load(os.path.join(current_path, f"GUI/figure/{prediction}_?Œì£¼ê¸°.png"))
         self.qPixmapFileVar_title3 = self.qPixmapFileVar_title3.scaledToWidth(720)
         self.perm_figure.setPixmap(self.qPixmapFileVar_title3)
         # dye
         self.qPixmapFileVar_title4 = QPixmap()
-        self.qPixmapFileVar_title4.load(os.path.join(current_path, f"GUI/figure/{prediction}_ì—¼ìƒ‰ì£¼ê¸°.png"))
+        self.qPixmapFileVar_title4.load(os.path.join(current_path, f"GUI/figure/{prediction}_?—¼?ƒ‰ì£¼ê¸°.png"))
         self.qPixmapFileVar_title4 = self.qPixmapFileVar_title4.scaledToWidth(720)
         self.dye_figure.setPixmap(self.qPixmapFileVar_title4)
 
