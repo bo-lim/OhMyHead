@@ -21,6 +21,7 @@
 <br>
 [하희정](https://github.com/Heejung-Ha)(School of Pharmacy)
 
+  
 ## 모델 테스트 방법
 
 1. 레포지토리를 다운로드 받습니다
@@ -41,4 +42,15 @@
 2. 터미널 혹은 cmd에서 cd '레포지토리 경로'를 입력합니다. ex) cd /Users/minkyukim/Documents/GitHub/OhMyHair
 3. python 'get_mse_scalp_model (검증 데이터셋 경로)'를 입력해 증상별(모낭사이홍반, 비듬 등) mse를 구합니다.
   
-</div >
+
+  
+## GUI 테스트 방법(GPU 환경에서 사용할 것을 권장)  
+
+*프로젝트 데모 영상은 [여기](https://drive.google.com/file/d/1M01hR645jDHQ3MIXtggoAYUJIyeC3NtX/view?usp=sharing)에서 확인할 수 있습니다.*   
+  
+  1. **모델 테스트 방법**의 3번까지 수행합니다.  
+  
+  2. ```python user_test.py```를 입력하면 두피 분석 프로그램을 실행할 수 있습니다.  
+  
+
+    
