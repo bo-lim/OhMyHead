@@ -1,4 +1,4 @@
-# OhMyHair
+# OhMyHead
 
 
 
@@ -11,7 +11,7 @@
 <br>
 [배병현](https://github.com/bbh-pharm)(School of Pharmacy)
 <br>
-[이보림](깃허브 등 프로필 링크) (소속학부)
+[이보림](https://github.com/bo-lim) (School of Computer Science & Engineering)
 <br>
 [장혜진](깃허브 등 프로필 링크) (소속학부)
 <br>

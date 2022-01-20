@@ -16,7 +16,7 @@ form_class = uic.loadUiType(os.path.join(current_path, "GUI/output.ui"))[0]
 
 ### Disease description ###
 description = []    
-with open(os.path.join(current_path, "GUI/disease_explained.txt"), 'r') as f:
+with open(os.path.join(current_path, "GUI/disease_explained.txt"), 'r', encoding='utf-8') as f:
     for line in f:
         description.append(line)
 
