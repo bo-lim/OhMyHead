@@ -1,6 +1,10 @@
-# OhMyHead
+
+<div align="center"> <img width="400" alt="logo_output" src="https://user-images.githubusercontent.com/50979281/150292128-e326e1b8-5d62-4b54-8ced-4a230c8a607e.png"> 
+  
+  </dim>
 
 
+<div align=left> 
 
 ## Members
 
@@ -21,7 +25,20 @@
 
 1. 레포지토리를 다운로드 받습니다
 2. [학습된 가중피 파일](https://drive.google.com/file/d/1BSQtXElZyzfsNtfCARuOJ-2pfVc6cpNc/view?usp=sharing)을 다운로드 받은 뒤 레포지토리의 'Scalp_model_parameters'폴더 안에 넣습니다.
-3. 터미널에서 cd '레포지토리 경로'를 입력합니다. ex) cd /Users/minkyukim/Documents/GitHub/OhMyHair
+3. 터미널 혹은 cmd에서 cd '레포지토리 경로'를 입력합니다. ex) cd /Users/minkyukim/Documents/GitHub/OhMyHair
 4. 'python scalp_health_minkyuKim (이미지 경로)'를 입력해 테스트 결과를 확인합니다. 
 
 
+### 검증 데이터셋을 이용해 모델의 mse 구하기 
+
+1. 아래와 같이 검증 데이터셋을 구성합니다.
+
+<p float="left">
+<img width="400" alt="스크린샷 2022-01-20 오후 4 16 48" src="https://user-images.githubusercontent.com/50979281/150291331-708d49ad-3122-4316-9b65-f079ee055903.png"> 
+<img width="400" alt="스크린샷 2022-01-20 오후 4 16 55" src="https://user-images.githubusercontent.com/50979281/150291342-b92cc659-4eca-4a55-8996-75208c1efef6.png">
+</p>
+
+2. 터미널 혹은 cmd에서 cd '레포지토리 경로'를 입력합니다. ex) cd /Users/minkyukim/Documents/GitHub/OhMyHair
+3. python 'get_mse_scalp_model (검증 데이터셋 경로)'를 입력해 클래스별("모낭사이홍반_0.양호" 등) mse를 구합니다.
+  
+</div >
