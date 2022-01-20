@@ -53,9 +53,9 @@ def make_model() :
     
     return model
 
-def test_model(dataset_path, device) :
+def test_model(dataset_path) :
     
-    model = make_model(device)
+    model = make_model()
 
     # 학습된 가중치들 불러오기
     PATH_model = dataset_path + '/model_parameters.pt'
@@ -76,6 +76,15 @@ def test_model(dataset_path, device) :
     loss = nn.MSELoss()
 
     model.eval()
+
+    total_mse_val_1 = 0.0
+    total_mse_val_2 = 0.0
+    total_mse_val_3 = 0.0
+    total_mse_val_4 = 0.0
+    total_mse_val_5 = 0.0
+    total_mse_val_6 = 0.0
+
+    data_count = 0
     
     for folder_name in tqdm(label_folder_list, desc = "get MSE") : 
         
@@ -86,7 +95,6 @@ def test_model(dataset_path, device) :
 
         json_list = os.listdir(label_folder_path) # json파일 목록 담기
 
-        total_mse_per_class = 0.0
         for j in range(len(json_list)) : 
             json_file_path = label_folder_path + '/' + json_list[j]
 
@@ -117,11 +125,28 @@ def test_model(dataset_path, device) :
 
             y_pred = torch.squeeze(model(img))
 
-            total_mse_per_class +=loss(y_pred, y_true).item()
-        
-        avr_mse_per_class = total_mse_per_class / len(json_list)
+            total_mse_val_1 += loss(y_pred[0], y_true[0]).item()
+            total_mse_val_2 += loss(y_pred[1], y_true[1]).item()
+            total_mse_val_3 += loss(y_pred[2], y_true[2]).item()
+            total_mse_val_4 += loss(y_pred[3], y_true[3]).item()
+            total_mse_val_5 += loss(y_pred[4], y_true[4]).item()
+            total_mse_val_6 += loss(y_pred[5], y_true[5]).item()
 
-        print("\"" + class_name + "\"의 MSE : ", avr_mse_per_class) 
+            data_count+=1
+
+    total_mse_val_1 /= data_count
+    total_mse_val_2 /= data_count
+    total_mse_val_3 /= data_count
+    total_mse_val_4 /= data_count
+    total_mse_val_5 /= data_count
+    total_mse_val_6 /= data_count
+
+    print("미세각질의 MSE : ", total_mse_val_1)
+    print("피지과다의 MSE : ", total_mse_val_2)
+    print("모낭사이홍반의 MSE : ", total_mse_val_3)
+    print("모낭홍반농포의 MSE : ", total_mse_val_4)
+    print("비듬의 MSE : ", total_mse_val_5)
+    print("탈모의 MSE : ", total_mse_val_6)
 
 
 def main(DATASET_PATH) :
