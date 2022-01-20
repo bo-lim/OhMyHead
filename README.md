@@ -17,7 +17,7 @@
 <br>
 [이보림](https://github.com/bo-lim) (School of Computer Science & Engineering)
 <br>
-[장혜진](깃허브 등 프로필 링크) (소속학부)
+[장혜진](https://github.com/wkdgPwls617)(School of Integrative Engineering)
 <br>
 [하희정](https://github.com/Heejung-Ha)(School of Pharmacy)
 
