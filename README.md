@@ -44,7 +44,7 @@
   
 
   
-## GUI 테스트 방법(GPU 환경에서 사용할 것을 권장)  
+## GUI 테스트 방법(GPU 환경 권장)  
 
 *프로젝트 데모 영상은 [여기](https://drive.google.com/file/d/1M01hR645jDHQ3MIXtggoAYUJIyeC3NtX/view?usp=sharing)에서 확인할 수 있습니다.*   
   
