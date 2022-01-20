@@ -9,7 +9,6 @@ import torch
 ### PATH ###
 # current_path = ./OHMYHAIR
 current_path = os.getcwd()
-print(current_path)
 
 ### Connect to ui file ###
 form_class = uic.loadUiType(os.path.join(current_path, "GUI/output.ui"))[0]
@@ -31,6 +30,16 @@ class WindowClass(QMainWindow, form_class) :
         prediction_vec = pred_tensor
         prediction_list = ['미세각질', '피지과다', '모낭사이홍반', '모낭홍반농포', '비듬', '탈모']
         prediction = prediction_list[torch.argmax(prediction_vec)]
+        max_pro = torch.max(prediction_vec).item()
+        # 0=양호, 0.33=경증, 0.66=중등도, 1.00=중증
+        if max_pro < 0.33/2:
+            severity = '양호'
+        elif max_pro >= 0.33/2 or max_pro < (0.33+0.66)/2:
+            severity = '경증'
+        elif max_pro >= (0.33+0.66)/2 or max_pro < (1+0.66)/2:
+            severity = '중등도'
+        else:
+            severity = '중증'
 
         # Set the window title
         self.setWindowTitle("Oh My Head - CUAI winter project - Healthcare team")
@@ -57,9 +66,12 @@ class WindowClass(QMainWindow, form_class) :
 
         # Model prediction
         self.result_txt.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold))
-        self.model_prediction.setText("미세각질이 %.4f만큼, 피지과다가 %.4f만큼, 모낭사이홍반이 %.4f만큼, 모낭홍반농포가 %.4f만큼, 비듬이 %.4f만큼, 탈모가 %.4f만큼 있습니다."\
-                                       % tuple(prediction_vec.tolist()))
+        self.model_prediction.setText("당신의 두피 두피 증상 {}에 대한 심각도는 {}입니다. 수치상으로는 {}이며 기준은 다음과 같습니다.".format(
+                                        prediction, severity, max_pro))
+        self.model_prediction2.setText("(0=양호, 0.33=경증, 0.66=중등도, 1.00=중증)")
         self.model_prediction.setFont(QtGui.QFont("Arial", 15))
+        self.model_prediction2.setFont(QtGui.QFont("Arial", 15))
+
 
         # Disease description
         self.result_txt2.setText(prediction + " 관련 정보")
