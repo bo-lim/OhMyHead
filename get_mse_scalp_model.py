@@ -75,12 +75,13 @@ def test_model(dataset_path, device) :
     
     loss = nn.MSELoss()
 
-    avr_mse_per_class_dict = dict()
-
     model.eval()
+    
     for folder_name in tqdm(label_folder_list, desc = "get MSE") : 
         
-        image_folder_path = image_group_folder_path + "/" + '[원천]' + folder_name[7:] # or folder_name[4:]. 실행하기 전에 테스트 해볼 것. '모낭사이홍반_0.양호'과 같은 문자열이 나오는게 정상
+        class_name = folder_name[7:] # or folder_name[4:]. 실행하기 전에 테스트 해볼 것. '모낭사이홍반_0.양호'과 같은 문자열이 나오는게 정상
+
+        image_folder_path = image_group_folder_path + "/" + '[원천]' + class_name 
         label_folder_path = label_group_folder_path + '/' + folder_name
 
         json_list = os.listdir(label_folder_path) # json파일 목록 담기
@@ -120,9 +121,7 @@ def test_model(dataset_path, device) :
         
         avr_mse_per_class = total_mse_per_class / len(json_list)
 
-        avr_mse_per_class_dict[folder_name[7:]] = avr_mse_per_class
-    
-    return avr_mse_per_class_dict
+        print("\"" + class_name + "\"의 MSE : ", avr_mse_per_class) 
 
 
 def main(DATASET_PATH) :
