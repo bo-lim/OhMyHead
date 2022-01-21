@@ -66,7 +66,7 @@ class WindowClass(QMainWindow, form_class) :
 
         # Model prediction
         self.result_txt.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold))
-        self.model_prediction.setText("당신의 두피 두피 증상 {}에 대한 심각도는 {}입니다. 수치상으로는 {}이며 기준은 다음과 같습니다.".format(
+        self.model_prediction.setText("당신의 두피 증상 {}에 대한 심각도는 {}입니다. 수치상으로는 {:.4f}이며 기준은 다음과 같습니다.".format(
                                         prediction, severity, max_pro))
         self.model_prediction2.setText("(0=양호, 0.33=경증, 0.66=중등도, 1.00=중증)")
         self.model_prediction.setFont(QtGui.QFont("Arial", 15))
