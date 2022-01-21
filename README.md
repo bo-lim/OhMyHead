@@ -46,7 +46,7 @@
   
 ## GUI 테스트 방법(GPU 환경 권장)  
 
-*프로젝트 데모 영상은 [여기](https://drive.google.com/file/d/115n9G09O4iL5bLGcHLBOHkWrSst9SKsk/view?usp=sharing)에서 확인할 수 있습니다.*   
+*프로젝트 데모 영상은 [여기](https://drive.google.com/file/d/1M9RTJ0mOJq1CMKB6aQcJ8o-XFjYbgx30/view?usp=sharing)에서 확인할 수 있습니다.*   
   
   1. **모델 테스트 방법**의 3번까지 수행합니다.  
   
