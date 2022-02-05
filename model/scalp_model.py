@@ -3,7 +3,11 @@
 # 제작일 : 2022.01.09
 # 제작자 : 김민규(minkyu4506@gmail.com)
 
-import scalp_dataset
+'''
+02.05 
+bo-lim - debug module error
+'''
+from . import scalp_dataset
 
 from tqdm import tqdm
 from PIL import Image
