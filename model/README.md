@@ -2,8 +2,7 @@
 ---
 모발 이미지를 이용하는 모델의 구현코드가 있는 폴더입니다. 
 
-## 1. dataset_MinkyuKim.py, scalp_model_MinkyuKim.py
-김민규가 만든 모발 상태 분류 모델, 데이터셋 처리 코드입니다. 
+## 1. dataset.py, scalp_model.py
 <br>
 #### 모델 : 2가지 모델이 있습니다.
 
