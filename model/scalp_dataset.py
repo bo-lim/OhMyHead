@@ -1,8 +1,3 @@
-# 학습과 테스트에 사용할 데이터셋을 만드는데 쓰이는 메소드들이 저장된 모듈
-
-# 제작일 : 2022.01.09
-# 제작자 : 김민규(minkyu4506@gmail.com)
-
 from tqdm import tqdm
 from PIL import Image
 import json
@@ -34,7 +29,16 @@ class Scalp_Health_Dataset(Dataset) :
 # dataset_path : root_path + '/Train'이나 root_path + '/Test'을 받음
 # (root_path : 데이터셋이 저장된 경로) 
 def make_dataset(dataset_path, category) :
-    
+    """make image dataset
+
+    Args:
+        dataset_path (str): dataset path
+        category (str): category name
+
+    Returns:
+        image_path_list: made image dataset path
+        vals_list : val1 ~ 6 Tensor
+    """
     
     image_group_folder_path = dataset_path + '/Image'
     label_group_folder_path = dataset_path + '/Label'
@@ -89,12 +93,7 @@ def make_dataset(dataset_path, category) :
             vals_list.append(vals_true/3.0)
             
     return image_path_list, vals_list
-    # image_path_list : 파일 경로가 저장된 리스트
-    # vals_list : val1 ~ val6이 들어있는 Tensor 리스트
     
-# 하나의 모발 이미지가 여러 증상을 가진 경우가 있다.
-# 하나의 이미지가 [A증상 중증, B증상 경증] 등 여러 증상에 대한 중증도를 나타내게끔 라벨 데이터를 만들어주는 기능도 한다
-# 즉, 데이터 전처리
 def make_unique_dataset(image_path_list, vals_list) :  
     unique_image_path_list = []
     unique_vals_list = []

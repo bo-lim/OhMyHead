@@ -1,57 +1,13 @@
-# 검증용 데이터셋을 이용해 model이 구한 값들들의 증상별 MSE를 구할 때 사용하는 파이썬 파일
-
-# 제작일 : 2022.01.20
-# 제작자 : 김민규(minkyu4506@gmail.com)
-
 from tqdm import tqdm
 from PIL import Image
 import json
 import os
 import sys
-
+from scalp_model import *
 import torch
 import torch.nn as nn
 import torchvision.models as models
 import torchvision.transforms as transforms
-
-def make_model() :
-    
-    model = models.densenet161(pretrained = True, memory_efficient = True)
-
-    # ImageNet으로 학습시킨 CNN은 수정하지 못하게끔
-    for param in model.features.parameters():
-        param.requires_grad = False
-
-    # 모발 분류를 위한 linear model 생성 후 교체
-    new_classifier = nn.Sequential(
-            nn.Linear(in_features=2208, out_features=512, bias=True),
-            nn.BatchNorm1d(num_features = 512),
-            nn.LeakyReLU(),
-            nn.Linear(in_features=512, out_features=256, bias=True),
-            nn.BatchNorm1d(num_features = 256),
-            nn.LeakyReLU(),
-            nn.Linear(in_features=256, out_features=256, bias=True),
-            nn.BatchNorm1d(num_features = 256),
-            nn.LeakyReLU(),
-            nn.Linear(in_features=256, out_features=128, bias=True),
-            nn.BatchNorm1d(num_features = 128),
-            nn.LeakyReLU(),
-            nn.Linear(in_features=128, out_features=64, bias=True),
-            nn.BatchNorm1d(num_features = 64),
-            nn.LeakyReLU(),
-            nn.Linear(in_features=64, out_features=32, bias=True),
-            nn.BatchNorm1d(num_features = 32),
-            nn.LeakyReLU(),
-            nn.Linear(in_features=32, out_features=6, bias=False)
-        )
-
-    for m in new_classifier.modules():
-        if isinstance(m, nn.Linear) :
-            nn.init.kaiming_uniform_(m.weight)
-            
-    model.classifier = new_classifier # 교체
-    
-    return model
 
 def test_model(dataset_path) :
     
@@ -148,11 +104,3 @@ def test_model(dataset_path) :
     print("비듬의 MSE : ", total_mse_val_5)
     print("탈모의 MSE : ", total_mse_val_6)
 
-
-def main(DATASET_PATH) :
-
-    test_model(DATASET_PATH)
-
-if __name__ == "__main__":
-    DATASET_PATH = sys.argv # 터미널에서 실행할 때 같이 입력한 이미지 경로
-    main(DATASET_PATH)

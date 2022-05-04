@@ -1,12 +1,3 @@
-# 모델의 생성, 학습, 가중치 불러오기, 테스트를 하는 메소드를 모아놓은 모듈
-
-# 제작일 : 2022.01.09
-# 제작자 : 김민규(minkyu4506@gmail.com)
-
-'''
-02.05 
-bo-lim - debug module error
-'''
 from . import scalp_dataset
 
 from tqdm import tqdm
@@ -18,9 +9,22 @@ import torch.nn as nn
 import torchvision.models as models
 import torchvision.transforms as transforms
 
-# 모델 학습에 사용됨
 def train(model, criterion, optimizer, epochs, train_data_loader, valid_data_loader, device, desc_str) :
-    # 학습 -> 성능 측정
+    """model training
+
+    Args:
+        model (pytorch model): model for training
+        criterion (function): loss function
+        optimizer (function): optimizer function
+        epochs (int): epoch num
+        train_data_loader (data loader): data loader for train
+        valid_data_loader (data loader): data loader for validation
+        device (str): cpu or cuda
+        desc_str
+
+    Returns:
+        model: trained model
+    """
     
     checkpoint_model = 0
     minimun_loss = 0
@@ -89,8 +93,15 @@ def train(model, criterion, optimizer, epochs, train_data_loader, valid_data_loa
     
     return model
 
-# 모델을 생성
 def make_model(device) :
+    """model finetuning
+
+    Args:
+        device (str): cpu or cuda
+
+    Returns:
+        model : revised model
+    """
 
     model = models.densenet161(pretrained = True, memory_efficient = True).to(device)
 
@@ -102,22 +113,16 @@ def make_model(device) :
     new_classifier = nn.Sequential(
             nn.Linear(in_features=2208, out_features=512, bias=True),
             nn.BatchNorm1d(num_features = 512),
-            nn.LeakyReLU(),
+            nn.ReLU(),
             nn.Linear(in_features=512, out_features=256, bias=True),
             nn.BatchNorm1d(num_features = 256),
-            nn.LeakyReLU(),
-            nn.Linear(in_features=256, out_features=256, bias=True),
-            nn.BatchNorm1d(num_features = 256),
-            nn.LeakyReLU(),
+            nn.ReLU(),
             nn.Linear(in_features=256, out_features=128, bias=True),
-            nn.BatchNorm1d(num_features = 128),
-            nn.LeakyReLU(),
-            nn.Linear(in_features=128, out_features=64, bias=True),
             nn.BatchNorm1d(num_features = 64),
-            nn.LeakyReLU(),
+            nn.ReLU(),
             nn.Linear(in_features=64, out_features=32, bias=True),
             nn.BatchNorm1d(num_features = 32),
-            nn.LeakyReLU(),
+            nn.ReLU(),
             nn.Linear(in_features=32, out_features=6, bias=False)
         ).to(device)
 
@@ -129,10 +134,16 @@ def make_model(device) :
     
     return model
 
-# 학습된 가중치를 불러옴
-# device : 'cuda' or 'cpu'
-# PATH의 예 : '/home/ubuntu/CUAI_2021/Advanced_Minkyu_Kim/Scalp_model_parameters/'
 def load_model_trained(device, PATH) :
+    """load trained model
+
+    Args:
+        device (str): cpu or cuda
+        PATH (str): path
+
+    Returns:
+        model
+    """
 
     model = make_model(device)
 
@@ -143,7 +154,6 @@ def load_model_trained(device, PATH) :
     
     return model
 
-# 모델을 학습시킴
 def train_model(dataset_root_path, model, device) :
 
     Train_Scalp_Health_Dataset, Valid_Scalp_Health_Dataset,_ = scalp_dataset.get_dataset(dataset_root_path)
@@ -171,8 +181,6 @@ def train_model(dataset_root_path, model, device) :
     
     return model
 
-# 모델을 테스트
-# img_path : 이미지 파일의 경로
 def test_model(img_path, model, device) :
 
     state_str_list = ["미세각질", "피지과다", "모낭사이홍반", "모낭홍반농포", "비듬", "탈모", "양호"]
