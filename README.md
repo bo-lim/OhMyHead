@@ -6,6 +6,13 @@
 
 <div align=left> 
 
+## Detail
+[[CUAI]동계컨퍼런스_short paper](https://github.com/bo-lim/OhMyHead/files/8637515/CUAI._short.paper.pdf)
+ 
+<img height="100" width="200" alt="컨퍼런스 발표 video" src="hhttps://user-images.githubusercontent.com/55435898/167067663-9b946b15-9b31-4de3-8c95-34cef679bd42.mp4">
+
+
+  
 ## Members
 
 
